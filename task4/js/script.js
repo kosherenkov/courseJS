@@ -109,6 +109,15 @@ do {
 while ( i < 2);
 */
 
+//Функція для необовязкових розходів
+function chooseOptExpenses() {
+    for (let i = 0; i < 3; i++) {
+        let a = prompt ("Ваші необовязкові витрати?");
+        appData.optionalExpenses[i] = a;
+    };
+}
+chooseOptExpenses();
+
 //Функція для підрахунку бютжета на день
 function detectDayBudget() {
     appData.moneyPerDay = (appData.budget / 30).toFixed(1);

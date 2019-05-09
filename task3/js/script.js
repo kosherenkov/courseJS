@@ -107,8 +107,12 @@ do {
 }
 while ( i < 2);
 */
-
-appData.moneyPerDay = (appData.budget / 30).toFixed(1); 
+function detectDayBudget() {
+    appData.moneyPerDay = (appData.budget / 30).toFixed(1);
+    alert("Б'ютжет на день: " + appData.moneyPerDay);
+}
+ 
+detectDayBudget();
 
 if (appData.moneyPerDay < 100) {
     console.log("Мінімальний дохід");
@@ -122,7 +126,4 @@ if (appData.moneyPerDay < 100) {
 }
 
 
-
-
-alert("Б'ютжет на день: " + appData.moneyPerDay);
 console.log(appData);

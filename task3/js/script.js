@@ -1,7 +1,16 @@
  'use strict';
  
- let money = +prompt("Ваш бюджет на месяц?", ''),
-	 time = prompt('Введите дату в формате YYYY-MM-DD', '');
+let money, time;
+
+ function start () {
+     money = +prompt("Ваш бюджет на месяц?", '');
+     time = prompt('Введите дату в формате YYYY-MM-DD', '');
+     
+     while (isNaN(money) || money == "" || money == null) {
+        money = +prompt("Ваш бюджет на месяц?", '');
+     }
+ }
+ start();
 
 let appData = {
 	budget: money,
@@ -9,10 +18,43 @@ let appData = {
 	optionalExpenses: {},
 	income: [],
 	timeData: time,
-	savings: false
+	savings: true
 };
 
-for (let i = 0; i < 2; i++) {
+//Функція для обовязкових витрат
+function chooseExpenses () {
+    for (let i = 0; i < 2; i++) {
+        let a = prompt("Введите обязательную статью расходов в этом месяце", ''),
+            b = prompt("Во сколько обойдется?", '');
+        appData.expenses[a] = b;
+    
+        if ( (typeof(a)) === 'string' && (typeof(a) != null) && (typeof(b) != null) && a != '' && b != ''
+        && a.length < 50 );
+        else {
+            //якщо нічого не вводять потрібно повернутися до циклу знову
+            if (a  = '') continue ;
+            if (b = '') continue ;
+            alert("Поля не можуть бути порожніми");
+            i--; 
+        }
+    }
+}
+chooseExpenses();
+
+function checkSavings () {
+    if (appData.savings == true) {
+        let save = +prompt ("Яка у Вас сума накопичень?"),
+            persent = +prompt ("Під який відсоток?");
+
+        appData.mounthIncome = (save/100/12*persent).toFixed(2);
+
+        alert ("Дохід в місяць з депозиту: " + appData.mounthIncome);
+    }
+}
+
+checkSavings();
+
+/*for (let i = 0; i < 2; i++) {
     let a = prompt("Введите обязательную статью расходов в этом месяце", ''),
         b = prompt("Во сколько обойдется?", '');
     appData.expenses[a] = b;
@@ -26,7 +68,7 @@ for (let i = 0; i < 2; i++) {
         alert("Поля не можуть бути порожніми");
         i--; 
     }
-};
+};*/
 
 //Цикл while
 /*let i = 0;
@@ -66,7 +108,7 @@ do {
 while ( i < 2);
 */
 
-appData.moneyPerDay = appData.budget / 30; 
+appData.moneyPerDay = (appData.budget / 30).toFixed(1); 
 
 if (appData.moneyPerDay < 100) {
     console.log("Мінімальний дохід");

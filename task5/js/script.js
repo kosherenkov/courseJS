@@ -67,6 +67,11 @@ let appData = {
         }   else {
             console.log("Вмнмкла помилка. ВВедіть коректні дані");
         }
+    },
+    choseIncome: function() {
+        let items = prompt('Що принесе додатковий дохід? (Перечисліть через кому)', '');
+        appData.income = items.split(', ');
+        appData.income.push(prompt('Можливо ще щось?'));
+        appData.income.sort();
     }
 };
-

@@ -77,10 +77,13 @@ let appData = {
             appData.income.push(prompt('Можливо ще щось?'));
             appData.income.sort();
         }
-        
+
         appData.income.forEach(function(items, i) {
             console.log( (i+1) + " Способи додаткового заробітку: " + items);
         });
-        
+
+        for (let key in appData) {
+            console.log("Наша програма включає в себе таку інформацію: " + key + " " + appData[key]);
+        };        
     }
 };

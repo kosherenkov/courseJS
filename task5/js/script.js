@@ -70,8 +70,17 @@ let appData = {
     },
     choseIncome: function() {
         let items = prompt('Що принесе додатковий дохід? (Перечисліть через кому)', '');
-        appData.income = items.split(', ');
-        appData.income.push(prompt('Можливо ще щось?'));
-        appData.income.sort();
+        if (typeof(items) != "string" || items =='' || typeof(items) == null ) {
+            console.log("Ви ввели невірні дані")
+        } else {
+            appData.income = items.split(', ');
+            appData.income.push(prompt('Можливо ще щось?'));
+            appData.income.sort();
+        }
+        
+        appData.income.forEach(function(items, i) {
+            console.log( (i+1) + " Способи додаткового заробітку: " + items);
+        });
+        
     }
 };

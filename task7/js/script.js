@@ -14,7 +14,7 @@ let startBtn = document.getElementById("start"),
     optionalExpensesBtn = document.getElementsByTagName("button")[1],
     countBudgetBtn = document.getElementsByTagName("button")[2],
     optionalExpensesItem = document.querySelectorAll(".optionalexpenses-item"),
-    chooseIncome = document.querySelector("choose-income"),
+    chooseIncome = document.querySelector(".choose-income"),
     savings = document.querySelector("#savings"),
     chooseSum = document.querySelector(".choose-sum"),
     choosePercent = document.querySelector(".choose-percent"),
@@ -39,79 +39,97 @@ let startBtn = document.getElementById("start"),
          dayValue.value = new Date(Date.parse(time)).getDate();
     });
 
+    //Обовязкові витрати
+    expensesItemBtn.addEventListener('click', function(){ 
+        let sum = 0;
+        for (let i = 0; i < expensesItem.length; i++) {
+            let a = expensesItem[i].value;
+                b = expensesItem[++i].value;
+                
+            if ( (typeof(a)) === 'string' && (typeof(a) != null) && (typeof(b) != null) && a != '' && b != '' && a.length < 50 ) {
+            appData.expenses[a] = b;
+            sum += +b;
+            } else {
+                //якщо нічого не вводять потрібно повернутися до циклу знову
+                i = i-1; 
+            }
+        };
+        expensesValue.textContent = sum;
+    });
+
+    //Необовязкові витрати
+    optionalExpensesBtn.addEventListener('click', function(){
+        for (let i = 0; i < optionalExpensesItem.length; i++) {
+            let opt = optionalExpensesItem[i].value;
+            appData.optionalExpenses[i] = opt;
+            optionalExpensesValue.textContent += appData.optionalExpenses[i] + " ";
+        };
+    });
+
+    //розрахунок бютжета на день + рівень доходу
+    countBudgetBtn.addEventListener('click', function(){
+        if (appData.budget != undefined) {
+            appData.moneyPerDay = (appData.budget / 30).toFixed(1);
+            dayBudgetValue.textContent = appData.moneyPerDay;
+
+            if (appData.moneyPerDay < 100) {
+                levelValue.textContent = "Мінімальний дохід";
+            } else if (appData.moneyPerDay > 100 && appData.moneyPerDay < 1000) {
+                  levelValue.textContent = "Середній дохід";
+            } else if (appData.moneyPerDay > 1000) {
+                levelValue.textContent = "Високий дохід";
+            } else {
+               levelValue.textContent = "Виникла помилка. Введіть коректні дані";
+            }
+        } else {
+            dayBudgetValue.textContent = "Виникла помилка. Введіть коректні дані";
+        }        
+    });
+
+    //додаткові  доходи
+    chooseIncome.addEventListener('input', function(){
+        let items = chooseIncome.value;
+        appData.income = items.split(', ');
+        incomeValue.textContent = appData.income;
+    });
+
+    savings.addEventListener('click', function(){
+        if (appData.savings == true){
+            appData.savings = false;
+        } else {
+            appData.savings = true;
+        }
+    });
+
+    chooseSum.addEventListener('input', function(){
+        if (appData.savings == true){
+            let sum = +chooseSum.value,
+                percent = +choosePercent.value;
+                appData.mounthIncome = (sum/100/12*percent).toFixed(2);
+                appData.yearIncome = (sum/100*percent).toFixed(2);
+                monthSavingsValue.textContent = appData.mounthIncome;
+                yearSavingsValue.textContent = appData.yearIncome;
+
+        }
+    });
+
+    choosePercent.addEventListener('input', function(){
+        if (appData.savings == true){
+            let sum = +chooseSum.value,
+            percent = +choosePercent.value;
+            appData.mounthIncome = (sum/100/12*percent).toFixed(2);
+            appData.yearIncome = (sum/100*percent).toFixed(2);
+            monthSavingsValue.textContent = appData.mounthIncome;
+            yearSavingsValue.textContent = appData.yearIncome;
+        }
+    });
+
     let appData = {
         budget: money,
         expenses: {},
         optionalExpenses: {},
         income: [],
         timeData: time,
-        savings: true,
-        chooseExpenses: function() {
-            for (let i = 0; i < 2; i++) {
-                let a = prompt("Введите обязательную статью расходов в этом месяце", ''),
-                    b = prompt("Во сколько обойдется?", '');
-                appData.expenses[a] = b;
-            
-                if ( (typeof(a)) === 'string' && (typeof(a) != null) && (typeof(b) != null) && a != '' && b != ''
-                && a.length < 50 );
-                else {
-                    //якщо нічого не вводять потрібно повернутися до циклу знову
-                    if (a  = '') continue ;
-                    if (b = '') continue ;
-                    alert("Поля не можуть бути порожніми");
-                    i--; 
-                }
-            };
-        },
-        checkSavings: function() {
-            if (appData.savings == true) {
-                let save = +prompt ("Яка у Вас сума накопичень?"),
-                    persent = +prompt ("Під який відсоток?");
-        
-                appData.mounthIncome = (save/100/12*persent).toFixed(2);
-        
-                alert ("Дохід в місяць з депозиту: " + appData.mounthIncome);
-            }
-        },
-        chooseOptExpenses: function() {
-            for (let i = 0; i < 3; i++) {
-                let a = prompt ("Ваші необовязкові витрати?");
-                appData.optionalExpenses[i] = a;
-            };
-        },
-        detectDayBudget: function() {
-            appData.moneyPerDay = (appData.budget / 30).toFixed(1);
-            alert("Б'ютжет на день: " + appData.moneyPerDay);
-        },
-        detectLevel: function() {
-            if (appData.moneyPerDay < 100) {
-                console.log("Мінімальний дохід");
-            }   
-                else if (appData.moneyPerDay > 100 && appData.moneyPerDay < 1000) {
-                    console.log("Середній дохід");
-            }   else if (appData.moneyPerDay > 1000) {
-                    console.log("Високий дохід");
-            }   else {
-                console.log("Вмнмкла помилка. ВВедіть коректні дані");
-            }
-        },
-        choseIncome: function() {
-            let items = prompt('Що принесе додатковий дохід? (Перечисліть через кому)', '');
-            if (typeof(items) != "string" || items =='' || typeof(items) == null ) {
-                console.log("Ви ввели невірні дані")
-            } else {
-                appData.income = items.split(', ');
-                appData.income.push(prompt('Можливо ще щось?'));
-                appData.income.sort();
-            }
-    
-            appData.income.forEach(function(items, i) {
-                console.log( (i+1) + " Способи додаткового заробітку: " + items);
-            });
-    
-            for (let key in appData) {
-                console.log("Наша програма включає в себе таку інформацію: " + key + " " + appData[key]);
-            };        
-        }
+        savings: false,       
     };
     

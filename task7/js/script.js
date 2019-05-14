@@ -76,7 +76,7 @@ let startBtn = document.getElementById("start"),
     //розрахунок бютжета на день + рівень доходу
     countBudgetBtn.addEventListener('click', function(){
         if (appData.budget != undefined) {
-            appData.moneyPerDay = (appData.budget / 30).toFixed(1);
+            appData.moneyPerDay = ((appData.budget - +expensesValue.textContent) / 30).toFixed(1);
             dayBudgetValue.textContent = appData.moneyPerDay;
 
             if (appData.moneyPerDay < 100) {

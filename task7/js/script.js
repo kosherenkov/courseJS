@@ -23,6 +23,9 @@ let startBtn = document.getElementById("start"),
     dayValue = document.querySelector(".day-value");
 
     let time, money;
+        expensesItemBtn.disabled = true;
+        optionalExpensesBtn.disabled = true;
+        countBudgetBtn.disabled = true;
     startBtn.addEventListener('click', function(){
         time = prompt('Введите дату в формате YYYY-MM-DD', '');
         money = +prompt("Ваш бюджет на месяц?", '');   
@@ -37,6 +40,10 @@ let startBtn = document.getElementById("start"),
          yearValue.value = new Date(Date.parse(time)).getFullYear();
          monthValue.value = new Date(Date.parse(time)).getMonth() + 1;
          dayValue.value = new Date(Date.parse(time)).getDate();
+
+        expensesItemBtn.disabled = false;
+        optionalExpensesBtn.disabled = false;
+        countBudgetBtn.disabled = false;
     });
 
     //Обовязкові витрати
